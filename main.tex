@@ -98,7 +98,7 @@
 \title{Control de Velocidad Angular del Motor CD hps5130}
 
 \author{\IEEEauthorblockN{Fabián Chacón Solano\orcidicon{}\IEEEauthorrefmark{1},
-Juan Pérez-Alvarado\IEEEauthorrefmark{1}, 
+Josué Quirós Barrantes\IEEEauthorrefmark{1}, 
 Andre Marie Ampere\IEEEauthorrefmark{1} y
 Ernest Rutherford\IEEEauthorrefmark{1}}
 \vspace{2mm}
@@ -120,9 +120,9 @@ Motor CD, Primer Orden, Root Locus, PID.
 
 \section{Introducción}
 
-En este informe se realiza la obtención de un modelo de control para un Motor CD con su respectiva verificación. Los objetivos de este laboratorio consisten en modelar analíticamente y empíricamente el Motor CD, diseñar un regulador electrónico PI por ubicación de polos, simular el funcionamiento de la planta, el regulador y el sistema de control usando Matlab, implementar de forma electrónica el regulador para la planta utilizada.
+En este informe se obtiene un modelo de control automático para un Motor CD hps5130 con su respectiva validación y prueba experimental. Los objetivos de este laboratorio consisten en modelar analíticamente y empíricamente el Motor CD, diseñar un regulador electrónico PI por ubicación de polos, simular el funcionamiento de la planta, el regulador y el sistema de control propuestos utilizando Matlab, implementar de forma electrónica el regulador para la planta utilizada.
 
-Los alcances de este laboratorio se encuentran dentro de la teoría de sistemas y control automático dada la planificación y desarrollo de un sistema físico. Además, se aprovecha la integración de conocimientos relacionada a análisis y control de sistemas dinámicos, procesamiento digital de señales, electrónica analógica, digital y mixta, junto a normalización técnica. Todo esto resulta en el uso de herramientas modernas de ingeniería para el control de velocidad del motor CD.
+Los alcances de este laboratorio se encuentran dentro de la teoría de sistemas y control automático, dada la planificación y desarrollo de un sistema físico. Además, se aprovecha la integración de conocimientos relacionada a análisis y control de sistemas dinámicos, procesamiento digital de señales, electrónica analógica, digital y mixta, junto a normalización técnica. Todo esto resulta en el uso de herramientas modernas de ingeniería para el control de velocidad del motor CD.
 
 \underline{\url{http://www.ie.tec.ac.cr/palvarado/LabCE/lce_guia_informe.pdf}} \cite{Pablo2018}.
 \section{Metodología}
@@ -136,44 +136,117 @@ La verificación del diseño a nivel computacional se realiza mediante simulink 
 La implementación del diseño se realiza dentro de la aplicación Pascal, se alimenta el kit PSoC 059 y se construye la estructura de control, esta estructura contiene el diseño del PID con la inserción de las constantes $K_p$ y $K_i$, las perturbaciones, la adquisición de datos de la planta y la definición de límites. Con los parámetros seleccionados correctamente se realiza la comprobación física del modelo y se extraen los datos para su análisis.
 
 \section{Análisis de Resultados}
-La sección de análisis y conclusión de los resultados obtenidos según el proceso metodológico de medición serán de importancia para lograr conclusiones relevantes y acertadas, es por ello que la redacción y el tiempo verbal deberán ser importantes, es necesario tomar en cuenta que los resultados ya fueron generados, esto como recomendación para la selección del tiempo verbal de la prosa.
 
-Es recomendable por cada resultado mostrado discutir el mismo con fundamentos teóricos y lógicos, es por ello que es importante tomar tiempo y analizar los resultados, ideas sin respaldo teórico ni lógico no son bien vistas. Como apoyo para la discusión es indispensable usar gráficos, figuras, tablas y cuadros los cuales deben de tener conexión con la prosa y además bien legible, de otra forma si no son discutidos y mucho menos legibles no aportan nada al artículo u informe.
+\subsection{Obtención de la función de transferencia a partir de resultados experimentales}
+Mediante la adquisición de datos realizada con los estímulos al motor se obtuvo la siguiente función de transferencia:
 
-Cuando se vayan a realizar comparaciones utilizar niveles de comparación cuantitativos y no cualitativos, esto hace referencia a lo siguiente:
+%Poner aquí la función de transferencia que obtuvimos para hacerle el mejor fitting
 
-\textbf{``En relación a la figura 1 se ve que cae más brusco en comparación con la figura 2''}, la frase anterior no es clara, pero si se tomará la siguiente redacción es más clara \textbf{``Con base al espectro FM de la figura 1 se cuantificó un piso de ruido de -90 dBm, donde para una frecuencia de 500 kHz la potencia medida es de +5 dBm por encima del nivel de piso de ruido obtenido en la figura 2, es por ello que la desviación FM disminuye en al menos 2\% para los casos analizados.''}
-
-Debido a la naturaleza científico-técnica de los reportes es necesario tener en cuenta la notación de ingeniería adecuada, formato de parámetros y las unidades correctas, es por ello que a continuación se muestran los siguientes casos: $S11$ $\neq$ $S_{11}$, $db$ $\neq$ $dB$, $miliwatt$ $\neq$ $mW$, $microwatt$ $\neq$ $\mu W$, $w$ $\neq$ $\omega$, $kiloohm$ $\neq$ $k \Omega$, entre otras.
-
-En relación a la presentación de ecuaciones es necesario, redactar las ideas de tal manera que la ecuación este autocontenida en el texto y sea de fácil entendimiento para el lector. Para ello tome el siguiente ejemplo de ecuación:
-
-\textbf{``El nivel de detección mínimo (LOD) para un modelo de elevación digital esta descrito por (\ref{LOD})":}
+Con el fin de detectar las diferencias en el control diseñado por el grupo se utilizó esta función de transferencia:
 \begin{equation}
-    LOD=\delta (z) = \sqrt{(\delta (z)_{DEM_{t\_n}})^2 + (\delta (z)_{DEM_{t\_{n+1}}})^2}
-    \label{LOD}
+    Motor(s)= \dfrac{14.87}{(s+10.4)}
+    \label{EQ_1}
 \end{equation}
-\textbf{donde $\delta (z)_{DEM_{t\_n}}$ y $\delta (z)_{DEM_{t\_{n+1}}}$ son los valores RMSE obtenidos en el eje $z$ de modelo de elevación digital.}
+\subsection{Mejoramiento del lugar de las raíces }
 
-En relación a las tablas o cuadros, es necesario resumir la información importante, esto con el objetivo de extraer algún comportamiento o tendencia de los datos, sin embargo es importante además utilizar técnicas de estadística descriptiva e inferencial en algunos casos para la discusión de los datos. Al momento de presentar los datos debe ser concisa la prosa y no redundar ni ahondar mucho en la idea. A continuación se muestra un ejemplo de como mostrar los resultados de un cuadro. \textbf{En el cuadro \ref{Noise} se resumen todos los datos experimentales obtenidos para el piso de ruido en dBm para un rango de frecuencias de 500 hasta 1000 kHz en incremento de 100 kHz respectivamente.}
-\begin{table}[!htb]
-\renewcommand{\arraystretch}{1.3}
-\caption{Tendencia del piso de ruido en función de la frecuencia}
-\label{Noise}
+Para ello es necesario evaluar como se encuentra el motor y mejorar el resultado según se requiera, en este caso un sobre impulso menor del 3$\%$, un tiempo de estabilización menor a 300ms y un error de estado estacionario igual a cero.
+\begin{figure}[!h]
 \centering
-\begin{tabular}{c  c}
-\hline
-\begin{tabular}[|c||c|]{@{}c@{}}$\textbf{Frecuencia}$\\ \textbf{(kHz)} \end{tabular} & \begin{tabular}[|c||c|]{@{}c@{}}$\textbf{Piso de Ruido}$\\ \textbf{(dBm)}\end{tabular}  \\ 
-\hline
-500 & 1.2239 \\
-600 & 1.4576 \\
-700 & 1.9860 \\
-800 & 1.5680 \\
-900 & 1.2370 \\
-1000 & 1.5680 \\
-\hline
-\end{tabular}
+\includegraphics[width=0.45\textwidth]{images/rlocusnocontrol.png}
+\caption{Lugar de las raíces del motor sin control}
+\label{fig:rlocus1}
+\end{figure}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.45\textwidth]{images/stepnocontrol.png}
+\caption{Respuesta al escalón del motor sin control}
+\label{fig:step1}
+\end{figure}
+
+En La Figura\ref{fig:rlocus1} las lineas negras representan los requerimientos de tiempo y sobre-impulso, lo cual indican que se cumplen, pero en la Figura\ref{fig:step1} se aprecia que tiene un error de estado estacionario. Por ello se decide emplear un polo en s = 0 y mejora la respuesta.
+Con ello se logra conseguir un error de cero , pero cambia el lugar de las raíces y no hay una ganancia que nos permita cumplir las otras especificaciones por lo que es necesario un cero. Así dar como resultado las Figuras\ref{fig:rlocus3} y \ref{fig:step4}, se opta por colocarlo en -10.4, justo sobre el polo más significativo y una ganancia proporcional K = 10.8. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.45\textwidth]{images/rlocuspid.png}
+\caption{Lugar de las raíces del motor con control PID}
+\label{fig:rlocus3}
+\end{figure}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.45\textwidth]{images/stepfinal.png}
+\caption{Respuesta al escalón del motor con control PID}
+\label{fig:step4}
+\end{figure}
+
+
+\subsection{Obtención de parámetros $K_p$ y $K_i$}
+
+Con la herramienta \textit{residue} de maltab se realizó la descomposición en paralelo del regulador $PI(s)$, la propuesta del regulador se convierte de la función de transferencia a la siguiente forma:
+
+\begin{equation}
+    PI(s)= \dfrac{K_c(s-z_0)}{s}= K_p + \dfrac{K_i}{s}
+    \label{EQ_2}
+\end{equation}
+
+A partir de la descomposición en matlab se obtuvieron los parámetros:
+
+\begin{equation}
+    K_p=1.3598
+    \label{EQ_4}
+\end{equation}
+
+\begin{equation}
+    K_i=14.1422
+    \label{EQ_5}
+\end{equation}
+
+De esta manera la ecuación del controlador:
+
+\begin{equation}
+    PI(s)= 1.3598 + \dfrac{14.1422}{s}
+    \label{EQ_6}
+\end{equation}
+
+Ya habiendo obtenido todos los parámetros necesarios para construir el control PID, se simula los incluso con una perturbación para recrear una posible situación en el motor.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{images/Sumalcioncompleta.png}
+\caption{Resultado de las simulación completa del motor con control}
+\label{fig:RSF}
+\end{figure}
+
+\subsection{Resultados experimentales del controlador}
+
+Mediante la herramienta LabControl se crea los componentes con los valores obtenidos de los cálculos en matlab y se introducen al motor, dando como resultado la siguiente Figura\ref{fig:R_5}
+ 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{images/RESULTADOS_MOTOR_CD.jpg}
+\caption{Gráfica de los resultados obtenidos del motor}
+\label{fig:R_5}
+\end{figure}
+
+%--------------
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    $\textbf{Característica}$ & $\textbf{Valor}$ \\
+    \hline
+    Mp & 2.825$\%$ \\
+    Ts & 205ms \\
+    P & 315ms \\
+    ess & 4.057 \\
+    \hline
+    \end{tabular}
+    \caption{Resultados del experimento}
+    \label{tab:tablaf}
 \end{table}
+
+
 
 \begin{figure}[!ht]
     \centering
